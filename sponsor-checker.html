@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The UK Insider | Zocially</title>
-    <meta name="description" content="Check your UK ILR eligibility with our free tool.">
+    <title>Sponsor Licence Checker | The UK Insider</title>
+    <meta name="description" content="Verify if a company is a licensed UK sponsor.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -41,31 +41,24 @@
     </header>
 
     <main>
-        <!-- The UK Insider Section -->
-        <section id="uk-insider" class="section">
+        <!-- Sponsor Checker Section -->
+        <section id="sponsor-checker" class="section">
             <div class="container">
                 <div class="section-header">
-                    <h2>The UK <span class="gradient-text">Insider</span></h2>
-                    <p>Exclusive tools, updates, and opportunities for your life in the UK.</p>
+                    <a href="uk-insider.html" class="back-link">← Back to Hub</a>
+                    <h2>Check a <span class="gradient-text">Sponsor</span></h2>
+                    <p>Verify if a company is licensed to sponsor workers in the UK.</p>
                 </div>
-                <div class="hub-grid">
-                    <!-- ILR Checker Card -->
-                    <a href="ilr-checker.html" class="hub-card glass-card">
-                        <div class="hub-icon">🇬🇧</div>
-                        <h3>UK Settlement Checker</h3>
-                        <p>Discover your earliest eligibility date for Indefinite Leave to Remain (ILR).</p>
-                        <span class="btn-secondary">Check Eligibility →</span>
-                    </a>
 
-                    <!-- Sponsor Checker Card -->
-                    <a href="sponsor-checker.html" class="hub-card glass-card">
-                        <div class="hub-icon">🏢</div>
-                        <h3>Sponsor Licence Checker</h3>
-                        <p>Verify if a company is licensed to sponsor workers in the UK.</p>
-                        <span class="btn-secondary">Search Register →</span>
-                    </a>
-
-
+                <div class="sponsor-search-card glass-card">
+                    <div class="search-box">
+                        <input type="text" id="sponsor-input" placeholder="Enter company name (e.g. Google)...">
+                        <button id="sponsor-btn" class="btn-primary">Search</button>
+                    </div>
+                    <div id="sponsor-results" class="results-list">
+                        <!-- Results injected here -->
+                        <div class="placeholder-text">Enter a name to search the register.</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -77,9 +70,6 @@
         </div>
     </footer>
 
-    <div id="debug-console"
-        style="position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: lime; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 12px; z-index: 9999; max-width: 300px; max-height: 200px; overflow-y: auto; pointer-events: none;">
-        Debug Log...</div>
     <script src="script.js?v=3"></script>
 </body>
 
