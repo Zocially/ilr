@@ -38,85 +38,70 @@ const services = [
     { id: 499, category: "Instagram", name: "Instagram Followers - 400K/Day [Life Time] ⚡", icon: "📸", price: "₹249.00 / 1000", description: "Super Fast | Lifetime Guarantee" },
     { id: 503, category: "Instagram", name: "Instagram Likes - Real Mixed", icon: "❤️", price: "₹49.00 / 1000", description: "Instant Start | Real Profiles" },
     { id: 504, category: "Instagram", name: "Instagram Reels Views", icon: "👀", price: "₹19.00 / 1000", description: "High Speed | Viral Reach" },
-
-    // YouTube
-    { id: 500, category: "YouTube", name: "YouTube Views - High Retention", icon: "🎥", price: "₹149.00 / 1000", description: "Non-Drop | Start Time: Instant" },
-    { id: 505, category: "YouTube", name: "YouTube Subscribers", icon: "🔔", price: "₹1,999.00 / 1000", description: "Real Users | Slow Speed for Safety" },
-    { id: 506, category: "YouTube", name: "YouTube Watch Time (4000H)", icon: "⏱️", price: "₹5,999.00 / Complete", description: "Monetization Ready" },
-
-    // Facebook
-    { id: 501, category: "Facebook", name: "Facebook Page Likes", icon: "👍", price: "₹399.00 / 1000", description: "Real Users | Refill Guarantee" },
-    { id: 507, category: "Facebook", name: "Facebook Video Views", icon: "📺", price: "₹99.00 / 1000", description: "Monetizable Views" },
-
-    // Telegram
-    { id: 502, category: "Telegram", name: "Telegram Members", icon: "✈️", price: "₹199.00 / 1000", description: "Global Members | Fast Speed" },
-    { id: 508, category: "Telegram", name: "Telegram Post Views", icon: "👁️", price: "₹29.00 / 1000", description: "Instant Delivery" },
-
-    // Twitter / X
-    { id: 509, category: "Twitter", name: "X (Twitter) Followers", icon: "🐦", price: "₹1,299.00 / 1000", description: "Refill 30 Days" },
-
-    // TikTok
-    { id: 510, category: "TikTok", name: "TikTok Views", icon: "🎵", price: "₹29.00 / 1000", description: "Instant | Viral" },
-    { id: 511, category: "TikTok", name: "TikTok Followers", icon: "busts_in_silhouette", price: "₹699.00 / 1000", description: "Real Accounts" },
-
-    // LinkedIn
-    { id: 512, category: "LinkedIn", name: "LinkedIn Followers", icon: "💼", price: "₹1,799.00 / 1000", description: "Professional Profiles" }
+    { id: 500, category: "Instagram", name: "Instagram Likes - Real & Active", icon: "❤️", price: "₹89.00 / 1000", description: "High Quality | Instant Start" },
+    { id: 501, category: "YouTube", name: "YouTube Views - High Retention", icon: "▶️", price: "₹499.00 / 1000", description: "Non-Drop | Watch Time Optimized" },
+    { id: 502, category: "YouTube", name: "YouTube Subscribers - Real", icon: "🔔", price: "₹2499.00 / 1000", description: "Organic Growth | Safe" },
+    { id: 503, category: "Twitter", name: "Twitter Followers - NFT Crypto", icon: "🐦", price: "₹999.00 / 1000", description: "Targeted Audience" }
 ];
 
-// Render Deals
+// Fetch and Render Deals from Supabase
 const dealsContainer = document.getElementById('deals-container');
-if (dealsContainer) {
-    deals.forEach(deal => {
-        const card = document.createElement('div');
-        card.className = 'glass-card';
-        card.innerHTML = `
-        <span class="deal-tag">${deal.tag}</span>
-        <h3 class="deal-title">${deal.title}</h3>
-        <p class="deal-desc">${deal.desc}</p>
-        <div class="deal-pricing">
-            <span class="price-new">${deal.price}</span>
-            <span class="price-old">${deal.originalPrice}</span>
-        </div>
-        <button class="btn-primary full-width" onclick="openOrderModal('${deal.title}')">Get Deal</button>
-    `;
-        dealsContainer.appendChild(card);
-    });
+
+async function loadDeals() {
+    if (!dealsContainer) return;
+
+    dealsContainer.innerHTML = '<div class="placeholder-text">Loading hot deals...</div>';
+
+    try {
+        const { data: deals, error } = await supabase
+            .from('deals')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        dealsContainer.innerHTML = '';
+
+        if (!deals || deals.length === 0) {
+            dealsContainer.innerHTML = '<div class="placeholder-text">No active deals right now. Check back soon!</div>';
+            return;
+        }
+
+        deals.forEach(deal => {
+            const card = document.createElement('div');
+            card.className = 'glass-card';
+            card.innerHTML = `
+            <span class="deal-tag">${deal.tag || 'DEAL'}</span>
+            <h3 class="deal-title">${deal.title}</h3>
+            <p class="deal-desc">${deal.description || ''}</p>
+            <div class="deal-pricing">
+                <span class="price-new">${deal.price}</span>
+                <span class="price-old">${deal.original_price || ''}</span>
+            </div>
+            <a href="${deal.link}" target="_blank" class="btn-primary full-width" style="text-align: center; text-decoration: none; display: block;">Get Deal</a>
+        `;
+            dealsContainer.appendChild(card);
+        });
+
+    } catch (err) {
+        console.error('Error loading deals:', err);
+        dealsContainer.innerHTML = '<div class="placeholder-text" style="color:red">Failed to load deals.</div>';
+    }
 }
 
-// Render Services with Filtering
+// Load deals on page load
+if (dealsContainer) {
+    loadDeals();
+}
+
+// Render Services (Static)
 const servicesContainer = document.getElementById('services-container');
-
 if (servicesContainer) {
-    const filterContainer = document.createElement('div');
-    filterContainer.className = 'filter-container';
+    // ... existing service rendering logic is fine, just ensuring it runs ...
+    // Filter Logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
 
-    // Extract unique categories
-    const categories = ['All', ...new Set(services.map(s => s.category))];
-
-    // Create Filter Buttons
-    categories.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = `filter-btn ${cat === 'All' ? 'active' : ''}`;
-        btn.textContent = cat;
-        btn.onclick = () => filterServices(cat);
-        filterContainer.appendChild(btn);
-    });
-
-    // Insert Filter before Grid
-    servicesContainer.parentNode.insertBefore(filterContainer, servicesContainer);
-
-    window.filterServices = function (category) {
-        // Update active button
-        const buttons = filterContainer.querySelectorAll('.filter-btn');
-        buttons.forEach(b => b.classList.remove('active'));
-
-        const activeBtn = Array.from(buttons).find(b => b.textContent === category);
-        if (activeBtn) activeBtn.classList.add('active');
-
-        // Filter Data
-        const filtered = category === 'All' ? services : services.filter(s => s.category === category);
-
-        // Render
+    function renderServices(category = 'All') {
         servicesContainer.innerHTML = '';
         filtered.forEach(service => {
             const card = document.createElement('div');
