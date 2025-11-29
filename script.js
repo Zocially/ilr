@@ -528,6 +528,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('sponsors.json');
                 if (!response.ok) throw new Error("Failed to load data");
                 sponsorData = await response.json();
+
+                // Load Metadata
+                try {
+                    const metaResponse = await fetch('metadata.json');
+                    if (metaResponse.ok) {
+                        const meta = await metaResponse.json();
+                        const dateEl = document.getElementById('data-date');
+                        if (dateEl && meta.last_updated) {
+                            dateEl.textContent = meta.last_updated;
+                        }
+                    }
+                } catch (err) {
+                    console.warn("Could not load metadata", err);
+                }
+
                 hasLoaded = true;
                 sponsorResults.innerHTML = `<div class="placeholder-text">Database loaded. Ready to search.</div>`;
                 console.log(`Loaded ${sponsorData.length} sponsors.`);

@@ -68,6 +68,16 @@ def process_sponsors():
             json.dump(sponsors, f)
             
         print(f"Successfully processed {len(sponsors)} sponsors to {JSON_FILENAME}.")
+
+        # Save Metadata
+        from datetime import datetime
+        metadata = {
+            "last_updated": datetime.now().strftime("%d %B %Y")
+        }
+        with open("metadata.json", "w", encoding='utf-8') as f:
+            json.dump(metadata, f)
+        print(f"Updated metadata.json with date: {metadata['last_updated']}")
+
         return True
         
     except Exception as e:
